@@ -11,6 +11,7 @@
 import Vditor from 'vditor'
 import HeaderNav from './partials/HeaderNav'
 import defaultText from '@config/default'
+import $api from '@/api';
 
 export default {
   name: 'index-page',
@@ -19,6 +20,7 @@ export default {
     return {
       isLoading: true,
       isMobile: window.innerWidth <= 960,
+      content: '',
       vditor: null,
     }
   },
@@ -29,7 +31,7 @@ export default {
       'font-size:2.113em;color: #2edfa3'
     )
     this.setDefaultText()
-    console.log = () => {}
+    //console.log = () => {}
   },
 
   components: {
@@ -100,10 +102,39 @@ export default {
       this.vditor.insertValue(imgMdStr)
     },
     setDefaultText() {
+      $api.getArticle().then((response) => {
+        console.log(response, 'rrrr');
+        this.content = response.data;
+      });//.catch(()=>{});
+      
       const savedMdContent = localStorage.getItem('vditorvditor') || ''
+      console.log(savedMdContent, 'dddd');
       if (!savedMdContent.trim()) {
+        let content = 'abcd';
         localStorage.setItem('vditorvditor', defaultText)
       }
+    },
+    createData() {
+      this.loading = true;
+      const { page, per_page, to } = this.table_config;
+      const { cart_id, sort_id } = this;
+
+      const v = {
+        title: this.org_name,
+        product_cate_id: cart_id, // 分类id
+        order: sort_id,
+        page: page,
+        per_page: per_page,
+        to: to
+      };
+      $api.saveArticle(v).then((response) => {
+        this.loading = false;
+        const { data, meta } = response.data;
+        data.forEach((item) => {
+          this.data.push(item);
+        });
+        this.table_config.total = meta.total;
+      });
     },
   },
 }

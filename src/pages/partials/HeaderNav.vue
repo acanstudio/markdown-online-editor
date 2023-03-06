@@ -11,6 +11,9 @@
         <strong v-if="!isMobile" class="header-text">{{ titleText }}</strong>
       </a>
       <div class="button-group">
+        <span class="hint--bottom" @click="onSaveOperation" aria-label="保存内容">
+          <icon class="header-icon" name="save" />
+        </span>
         <a
           href="https://www.jeffjade.com/about-me/?utm_sourece=markdown.lovejade.cn&pid=header"
           class="header-link"
@@ -134,6 +137,8 @@ export default {
       } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen()
       }
+    },
+    onSaveOperation() {
     },
     onThemeClick() {},
     onFullScreenClick() {
