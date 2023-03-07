@@ -159,7 +159,9 @@ export default {
         document.webkitExitFullscreen()
       }
     },
-    onSaveOperation() {},
+    onSaveOperation() {
+      this.$emit('saveData')
+    },
     onThemeClick() {},
     onFullScreenClick() {
       const isFullScreen =

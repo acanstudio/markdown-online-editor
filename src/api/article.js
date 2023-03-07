@@ -3,17 +3,16 @@ const BASE_URL = `${process.env.VUE_APP_BASE_API}`
 
 export default {
   // 获取文章内容
-  getArticle(data) {
+  getArticle(params) {
     return request({
-      url: `${BASE_URL}/${data.app}/${data.resource}/${data.id}`,
+      url: `${BASE_URL}/${params.app}/${params.resource}/${params.id}`,
       method: 'get',
-      params: data,
     })
   },
   // 编辑文章
-  saveArticle(data) {
+  saveArticle(params, data) {
     return request({
-      url: `${BASE_URL}/articles/1s`,
+      url: `${BASE_URL}/${params.app}/${params.resource}/${params.id}`,
       method: 'put',
       data,
     })

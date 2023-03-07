@@ -2,7 +2,7 @@
 
 <template>
   <div class="index-page" v-loading="isLoading">
-    <HeaderNav />
+    <HeaderNav @saveData="saveData"/>
     <div id="vditor" class="vditor" />
   </div>
 </template>
@@ -46,6 +46,14 @@ export default {
   },
 
   methods: {
+    saveData() {
+      let content = this.vditor.getValue()
+      let params = this.$route.query
+      params.id = 10000;
+      $api.saveArticle(params, {"content": content}).then((response) => {
+        this.$message.success('编辑成功')
+      }).catch(()=>{});
+    },
     initVditor() {
       const that = this
       const options = {
@@ -76,6 +84,7 @@ export default {
         },
       }
       this.vditor = new Vditor('vditor', options)
+      this.vditor.setValue('')
       this.vditor.focus()
     },
     onloadCallback(oEvent) {
@@ -103,45 +112,25 @@ export default {
     },
     setDefaultText() {
       let params = this.$route.query //{"app": "infocms", "resource": "articles", "id": 2}
+      console.log(params, 'ppppp')
       //let token = localStorage.getItem('token')
       if (params.id) {
         $api.getArticle(params).then((response) => {
           this.content = response.content.valueSource
-          localStorage.setItem('vditorvditor', this.content)
-        }) //.catch(()=>{});
-      }
-
-      if (!this.content) {
-        //const savedMdContent = localStorage.getItem('vditorvditor') || ''
-        //if (!savedMdContent.trim()) {}
-        this.content = localStorage.getItem('vditorvditor') || ''
-      }
-      if (!this.content) {
-        this.content = defaultText
+          this.vditor.setValue(this.content, true);
+          //localStorage.setItem('vditorvditor', this.content)
+        }).catch(()=>{});
+      } else {
+        if (!this.content) {
+          //const savedMdContent = localStorage.getItem('vditorvditor') || ''
+          //if (!savedMdContent.trim()) {}
+          this.content = localStorage.getItem('vditorvditor') || ''
+        }
+        if (!this.content) {
+          this.content = defaultText
+        }
       }
       //localStorage.setItem('vditorvditor', this.content)
-    },
-    createData() {
-      this.loading = true
-      const { page, per_page, to } = this.table_config
-      const { cart_id, sort_id } = this
-
-      const v = {
-        title: this.org_name,
-        product_cate_id: cart_id, // 分类id
-        order: sort_id,
-        page: page,
-        per_page: per_page,
-        to: to,
-      }
-      $api.saveArticle(v).then((response) => {
-        this.loading = false
-        const { data, meta } = response.data
-        data.forEach((item) => {
-          this.data.push(item)
-        })
-        this.table_config.total = meta.total
-      })
     },
   },
 }

@@ -6,7 +6,7 @@ const Tip = (msg) => {
   Message({
     message: msg || 'Error',
     type: 'error',
-    duration: 5 * 1000,
+    duration: 3 * 1000,
   })
 }
 
@@ -54,7 +54,8 @@ service.interceptors.response.use(
     } else {
       let message = res.message ? res.message : '未知错误'
       Tip(message + '-' + res.code)
-      return res
+      //return res
+      return Promise.reject()
     }
   },
   (error) => {
