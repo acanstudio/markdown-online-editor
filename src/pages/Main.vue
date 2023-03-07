@@ -105,10 +105,10 @@ export default {
       let params = this.$route.query //{"app": "infocms", "resource": "articles", "id": 2}
       //let token = localStorage.getItem('token')
       if (params.id) {
-      $api.getArticle(params).then((response) => {
-        this.content = response.content.valueSource
-        localStorage.setItem('vditorvditor', this.content)
-      }) //.catch(()=>{});
+        $api.getArticle(params).then((response) => {
+          this.content = response.content.valueSource
+          localStorage.setItem('vditorvditor', this.content)
+        }) //.catch(()=>{});
       }
 
       if (!this.content) {
