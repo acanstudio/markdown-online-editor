@@ -2,7 +2,7 @@
 
 <template>
   <div class="index-page" v-loading="isLoading">
-    <HeaderNav @saveData="saveData"/>
+    <HeaderNav @saveData="saveData" />
     <div id="vditor" class="vditor" />
   </div>
 </template>
@@ -49,10 +49,12 @@ export default {
     saveData() {
       let content = this.vditor.getValue()
       let params = this.$route.query
-      params.id = 10000;
-      $api.saveArticle(params, {"content": content}).then((response) => {
-        this.$message.success('编辑成功')
-      }).catch(()=>{});
+      $api
+        .saveArticle(params, { content: content })
+        .then((response) => {
+          this.$message.success('编辑成功')
+        })
+        .catch(() => {})
     },
     initVditor() {
       const that = this
@@ -115,11 +117,14 @@ export default {
       console.log(params, 'ppppp')
       //let token = localStorage.getItem('token')
       if (params.id) {
-        $api.getArticle(params).then((response) => {
-          this.content = response.content.valueSource
-          this.vditor.setValue(this.content, true);
-          //localStorage.setItem('vditorvditor', this.content)
-        }).catch(()=>{});
+        $api
+          .getArticle(params)
+          .then((response) => {
+            this.content = response.content.valueSource
+            this.vditor.setValue(this.content, true)
+            //localStorage.setItem('vditorvditor', this.content)
+          })
+          .catch(() => {})
       } else {
         if (!this.content) {
           //const savedMdContent = localStorage.getItem('vditorvditor') || ''
