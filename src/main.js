@@ -7,11 +7,11 @@ import router from './router'
 import './registerServiceWorker'
 
 import ElementUi from 'element-ui'
-Vue.use(ElementUi);
+Vue.use(ElementUi)
 
 //import './icons'
 
 new Vue({
   router,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app')

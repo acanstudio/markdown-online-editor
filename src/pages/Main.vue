@@ -11,7 +11,7 @@
 import Vditor from 'vditor'
 import HeaderNav from './partials/HeaderNav'
 import defaultText from '@config/default'
-import $api from '@/api';
+import $api from '@/api'
 
 export default {
   name: 'index-page',
@@ -102,12 +102,15 @@ export default {
       this.vditor.insertValue(imgMdStr)
     },
     setDefaultText() {
-      let params = this.$route.query//{"app": "infocms", "resource": "articles", "id": 2}
+      let params = this.$route.query //{"app": "infocms", "resource": "articles", "id": 2}
+      //let token = localStorage.getItem('token')
+      if (params.id) {
       $api.getArticle(params).then((response) => {
         this.content = response.content.valueSource
         localStorage.setItem('vditorvditor', this.content)
-      });//.catch(()=>{});
-      
+      }) //.catch(()=>{});
+      }
+
       if (!this.content) {
         //const savedMdContent = localStorage.getItem('vditorvditor') || ''
         //if (!savedMdContent.trim()) {}
@@ -119,9 +122,9 @@ export default {
       //localStorage.setItem('vditorvditor', this.content)
     },
     createData() {
-      this.loading = true;
-      const { page, per_page, to } = this.table_config;
-      const { cart_id, sort_id } = this;
+      this.loading = true
+      const { page, per_page, to } = this.table_config
+      const { cart_id, sort_id } = this
 
       const v = {
         title: this.org_name,
@@ -129,16 +132,16 @@ export default {
         order: sort_id,
         page: page,
         per_page: per_page,
-        to: to
-      };
+        to: to,
+      }
       $api.saveArticle(v).then((response) => {
-        this.loading = false;
-        const { data, meta } = response.data;
+        this.loading = false
+        const { data, meta } = response.data
         data.forEach((item) => {
-          this.data.push(item);
-        });
-        this.table_config.total = meta.total;
-      });
+          this.data.push(item)
+        })
+        this.table_config.total = meta.total
+      })
     },
   },
 }

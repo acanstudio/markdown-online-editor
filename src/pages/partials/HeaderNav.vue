@@ -94,13 +94,13 @@
         <span class="hint--bottom full-screen" @click="onFullScreenClick" aria-label="全屏">
           <icon class="header-icon" name="full-screen" />
         </span>
-        <span v-if="userInfo" >
-        <span class="hint--bottom full-screen" :aria-label="userInfo.name">
-          <icon class="header-icon" name="user" />
-        </span>
-        <span class="hint--bottom full-screen" @click="logout" aria-label="退出">
-          <icon class="header-icon" name="logout" />
-        </span>
+        <span v-if="userInfo">
+          <span class="hint--bottom full-screen" :aria-label="userInfo.name">
+            <icon class="header-icon" name="user" />
+          </span>
+          <span class="hint--bottom full-screen" @click="logout" aria-label="退出">
+            <icon class="header-icon" name="logout" />
+          </span>
         </span>
         <span v-else class="hint--bottom full-screen" @click="toLogin" aria-label="登录">
           <icon class="header-icon" name="login" />
@@ -121,7 +121,7 @@ export default {
     return {
       isMobile: window.innerWidth <= 768,
       titleText: window.$appTitle,
-      exportTextMap
+      exportTextMap,
     }
   },
   computed: {
@@ -130,7 +130,7 @@ export default {
       if (!userInfo) {
         return ''
       }
-      userInfo = JSON.parse(userInfo);
+      userInfo = JSON.parse(userInfo)
       return userInfo
     },
   },
@@ -159,8 +159,7 @@ export default {
         document.webkitExitFullscreen()
       }
     },
-    onSaveOperation() {
-    },
+    onSaveOperation() {},
     onThemeClick() {},
     onFullScreenClick() {
       const isFullScreen =
@@ -175,17 +174,17 @@ export default {
     },
     toLogin() {
       this.$router.push({
-        path: '/login'
-      });
+        path: '/login',
+      })
     },
     logout() {
       localStorage.removeItem('token')
       localStorage.removeItem('userInfo')
-      this.$router.push({
-        path: '/'
-      });
-    }
-  }
+      this.$router.go({
+        path: '/',
+      })
+    },
+  },
 }
 </script>
 

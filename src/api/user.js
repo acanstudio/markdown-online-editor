@@ -7,7 +7,7 @@ export default {
     return request({
       url: `${BASE_URL}/passport/token`,
       method: 'post',
-      params: data
+      params: data,
     })
   },
   // 编辑文章
@@ -15,7 +15,7 @@ export default {
     return request({
       url: `${BASE_URL}/articles/1s`,
       method: 'put',
-      data
+      data,
     })
-  }
+  },
 }

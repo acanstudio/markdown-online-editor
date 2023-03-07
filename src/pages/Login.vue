@@ -107,17 +107,17 @@
 </template>
 
 <script>
-import $api from "@/api/user";
+import $api from '@/api/user'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       loginForm: {
-        mobile: "", // 手机号
-        mobileSignin: "", // 手机号
-        code: "", // 验证码
-        password: "", //密码
+        mobile: '', // 手机号
+        mobileSignin: '', // 手机号
+        code: '', // 验证码
+        password: '', //密码
       },
       cur: false, //true代表短信, false代表密码
       sending: false,
@@ -125,142 +125,143 @@ export default {
       sendDisabled: false,
       loading: false,
       timer: 0,
-      passwordType: "password",
+      passwordType: 'password',
       redirect: undefined,
-    };
+    }
   },
   computed: {
     sendButtonText() {
       if (this.timer === 0) {
-        return "发送验证码";
+        return '发送验证码'
       } else {
-        return `${this.timer}秒后重发`;
+        return `${this.timer}秒后重发`
       }
     },
   },
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true,
     },
     timer(num) {
       if (num > 0) {
         setTimeout(() => {
-          this.timer = --num;
-        }, 1000);
+          this.timer = --num
+        }, 1000)
       }
     },
   },
   created() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     if (token) {
-      this.$message.success("您已登录");
+      this.$message.success('您已登录')
       this.$router.push({
-        path: this.redirect || "/"
-      });
+        path: this.redirect || '/',
+      })
     }
   },
 
   methods: {
     onSendSms() {
-      this.loginWay = false;
-      let mobileSignin = this.loginForm.mobileSignin;
-      let checkMobile = this.checkMobile(mobileSignin);
+      this.loginWay = false
+      let mobileSignin = this.loginForm.mobileSignin
+      let checkMobile = this.checkMobile(mobileSignin)
       if (!checkMobile) {
-        this.$message.error("请输入正确的手机号");
-        return;
+        this.$message.error('请输入正确的手机号')
+        return
       }
 
-      this.sending = true;
+      this.sending = true
 
       sendSms({ mobile: mobileSignin })
         .then((response) => {
-          this.$message.success("短信发送成功，请注意查收");
-          Cookie.set("last-send-time", new Date());
-          this.timer = 60;
+          this.$message.success('短信发送成功，请注意查收')
+          Cookie.set('last-send-time', new Date())
+          this.timer = 60
         })
         .catch((e) => {
-          this.$message.error("网络异常");
-          console.log(e);
+          this.$message.error('网络异常')
+          console.log(e)
         })
-        .finally(() => (this.sending = false));
+        .finally(() => (this.sending = false))
     },
     checkMobile(mobile) {
       if (!mobile) {
-        return false;
+        return false
       }
-      const reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+      const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
       if (!reg.test(mobile)) {
-        this.$message.error("请输入正确的手机号");
-        return false;
+        this.$message.error('请输入正确的手机号')
+        return false
       }
-      return true;
+      return true
     },
     showPwd() {
-      this.loginWay = true;
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      this.loginWay = true
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       //this.loading = true;
-      let mobile = "";
-      let sendData = {};
+      let mobile = ''
+      let sendData = {}
       if (this.cur) {
-        mobile = this.loginForm.mobileSignin;
-        let checkMobile = this.checkMobile(mobile);
+        mobile = this.loginForm.mobileSignin
+        let checkMobile = this.checkMobile(mobile)
         if (!checkMobile) {
-          this.$message.error("请输入正确的手机号");
-          return;
+          this.$message.error('请输入正确的手机号')
+          return
         }
-        let code = this.loginForm.code;
+        let code = this.loginForm.code
         if (!code) {
-          this.$message.error("请输入验证码");
-          return;
+          this.$message.error('请输入验证码')
+          return
         }
-        sendData = { mobile: mobile, code: code };
+        sendData = { mobile: mobile, code: code }
       } else {
-        mobile = this.loginForm.mobile;
-        let password = this.loginForm.password;
+        mobile = this.loginForm.mobile
+        let password = this.loginForm.password
         if (!password) {
-          this.$message.error("请输入密码");
-          return;
+          this.$message.error('请输入密码')
+          return
         }
-        sendData = { name: mobile, password: password };
+        sendData = { name: mobile, password: password }
       }
 
-      $api.login(sendData)
+      $api
+        .login(sendData)
         .then((response) => {
-          this.loading = false;
+          this.loading = false
 
-          let userData = response;
+          let userData = response
 
           localStorage.setItem('token', userData.access_token)
           localStorage.setItem('userInfo', JSON.stringify(userData.user))
 
-          this.$message.success("登录成功");
+          this.$message.success('登录成功')
 
           this.$router.push({
-            path: this.redirect || "/"
-          });
+            path: this.redirect || '/',
+          })
         })
-        .catch(e => {
-          this.loading = false;
-          this.$message.error("网络异常");
+        .catch((e) => {
+          this.loading = false
+          this.$message.error('网络异常')
           //this.$router.go({ path: this.redirect || '/', query: this.otherQuery })
-          console.log(e);
+          console.log(e)
         })
-        .finally(() => (this.sending = false));
+        .finally(() => (this.sending = false))
     },
   },
-};
+}
 </script>
 <style>
 .login_header a {

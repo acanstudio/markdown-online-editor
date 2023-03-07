@@ -7,42 +7,42 @@ export default [
   {
     path: '/',
     meta: {
-      title: window.$appTitle
+      title: window.$appTitle,
     },
-    component: resolve => require(['@pages/Main'], resolve)
+    component: (resolve) => require(['@pages/Main'], resolve),
   },
   {
     path: '/about-arya',
     meta: {
-      title: `关于 | ${window.$appTitle}`
+      title: `关于 | ${window.$appTitle}`,
     },
     component: Frame,
     children: [
       {
         path: '/',
         meta: {
-          title: `关于 | ${window.$appTitle}`
+          title: `关于 | ${window.$appTitle}`,
         },
-        component: resolve => require(['@pages/About'], resolve)
-      }
-    ]
+        component: (resolve) => require(['@pages/About'], resolve),
+      },
+    ],
   },
   {
     path: '/index',
-    redirect: '/'
+    redirect: '/',
   },
   {
     path: '/login',
     meta: {
-      title: '登录'
+      title: '登录',
     },
-    component: resolve => require(['@pages/Login'], resolve)
+    component: (resolve) => require(['@pages/Login'], resolve),
   },
   {
     path: '*',
     meta: {
-      title: 'Page Not Found'
+      title: 'Page Not Found',
     },
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ]

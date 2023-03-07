@@ -6,14 +6,14 @@ const Tip = (msg) => {
   Message({
     message: msg || 'Error',
     type: 'error',
-    duration: 5 * 1000
+    duration: 5 * 1000,
   })
 }
 
 // create an axios instance
 const service = axios.create({
   withCredentials: true, // send cookies when cross-domain requests
-  timeout: 10 * 1000 // request timeout
+  timeout: 10 * 1000, // request timeout
 })
 
 // request interceptor
@@ -33,7 +33,7 @@ service.interceptors.request.use(
         }
       }
     }
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
