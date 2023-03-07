@@ -2,17 +2,16 @@ import request from '@/utils/request'
 const BASE_URL = `${process.env.VUE_APP_BASE_API}`
 
 export default {
-  // 获取文章内容
-  getArticle(data) {
-    
+  // 用户登录
+  login(data) {
     return request({
-      url: `${BASE_URL}/${data.app}/${data.resource}/${data.id}`,
-      method: 'get',
+      url: `${BASE_URL}/passport/token`,
+      method: 'post',
       params: data
     })
   },
   // 编辑文章
-  saveArticle(data) {
+  register(data) {
     return request({
       url: `${BASE_URL}/articles/1s`,
       method: 'put',

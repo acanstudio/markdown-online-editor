@@ -22,11 +22,11 @@
             <icon class="header-icon" name="author" />
           </span>
         </a>
-        <router-link to="/about-arya?markdown.lovejade.cn&pid=header" class="header-link">
+        <!--<router-link to="/about-arya?markdown.lovejade.cn&pid=header" class="header-link">
           <span class="hint--bottom" aria-label="关于 Arya">
             <icon class="header-icon" name="document" />
           </span>
-        </router-link>
+        </router-link>-->
         <a
           href="https://www.lovejade.cn/zh/works/?utm_sourece=markdown.lovejade.cn&pid=header"
           class="header-link"
@@ -37,14 +37,14 @@
             <icon class="header-icon" name="recommend" />
           </span>
         </a>
-        <a
+        <!--<a
           href="https://github.lovejade.cn/?utm_sourece=markdown.lovejade.cn&pid=header"
           class="header-link"
         >
           <span class="hint--bottom" aria-label="作者 Github">
             <icon class="header-icon" name="github" />
           </span>
-        </a>
+        </a>-->
         <!-- <span class="hint--bottom" @click="onThemeClick" aria-label="变更主题">
           <icon class="header-icon" name="adjust" />
         </span> -->
@@ -94,6 +94,17 @@
         <span class="hint--bottom full-screen" @click="onFullScreenClick" aria-label="全屏">
           <icon class="header-icon" name="full-screen" />
         </span>
+        <span v-if="userInfo" >
+        <span class="hint--bottom full-screen" :aria-label="userInfo.name">
+          <icon class="header-icon" name="user" />
+        </span>
+        <span class="hint--bottom full-screen" @click="logout" aria-label="退出">
+          <icon class="header-icon" name="logout" />
+        </span>
+        </span>
+        <span v-else class="hint--bottom full-screen" @click="toLogin" aria-label="登录">
+          <icon class="header-icon" name="login" />
+        </span>
       </div>
     </h1>
   </section>
@@ -112,6 +123,16 @@ export default {
       titleText: window.$appTitle,
       exportTextMap
     }
+  },
+  computed: {
+    userInfo() {
+      let userInfo = localStorage.getItem('userInfo')
+      if (!userInfo) {
+        return ''
+      }
+      userInfo = JSON.parse(userInfo);
+      return userInfo
+    },
   },
 
   methods: {
@@ -151,6 +172,18 @@ export default {
     },
     handleCommand(command) {
       this.$router.push(command)
+    },
+    toLogin() {
+      this.$router.push({
+        path: '/login'
+      });
+    },
+    logout() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userInfo')
+      this.$router.push({
+        path: '/'
+      });
     }
   }
 }

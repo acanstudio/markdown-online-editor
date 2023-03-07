@@ -102,17 +102,21 @@ export default {
       this.vditor.insertValue(imgMdStr)
     },
     setDefaultText() {
-      $api.getArticle().then((response) => {
-        console.log(response, 'rrrr');
-        this.content = response.data;
+      let params = this.$route.query//{"app": "infocms", "resource": "articles", "id": 2}
+      $api.getArticle(params).then((response) => {
+        this.content = response.content.valueSource
+        localStorage.setItem('vditorvditor', this.content)
       });//.catch(()=>{});
       
-      const savedMdContent = localStorage.getItem('vditorvditor') || ''
-      console.log(savedMdContent, 'dddd');
-      if (!savedMdContent.trim()) {
-        let content = 'abcd';
-        localStorage.setItem('vditorvditor', defaultText)
+      if (!this.content) {
+        //const savedMdContent = localStorage.getItem('vditorvditor') || ''
+        //if (!savedMdContent.trim()) {}
+        this.content = localStorage.getItem('vditorvditor') || ''
       }
+      if (!this.content) {
+        this.content = defaultText
+      }
+      //localStorage.setItem('vditorvditor', this.content)
     },
     createData() {
       this.loading = true;

@@ -32,6 +32,13 @@ export default [
     redirect: '/'
   },
   {
+    path: '/login',
+    meta: {
+      title: '登录'
+    },
+    component: resolve => require(['@pages/Login'], resolve)
+  },
+  {
     path: '*',
     meta: {
       title: 'Page Not Found'

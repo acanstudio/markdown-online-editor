@@ -33,6 +33,10 @@ service.interceptors.request.use(
         }
       }
     }
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
 
     return config
   },
@@ -46,7 +50,7 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data
     if (res.code == 200) {
-      return res
+      return res.data
     } else {
       let message = res.message ? res.message : '未知错误'
       Tip(message + '-' + res.code)
