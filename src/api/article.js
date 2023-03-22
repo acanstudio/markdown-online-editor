@@ -9,6 +9,14 @@ export default {
       method: 'get',
     })
   },
+  // 添加文章
+  createArticle(params, data) {
+    return request({
+      url: `${BASE_URL}/${params.app}/${params.resource}`,
+      method: 'post',
+      data,
+    })
+  },
   // 编辑文章
   saveArticle(params, data) {
     return request({

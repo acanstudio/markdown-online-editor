@@ -49,12 +49,23 @@ export default {
     saveData() {
       let content = this.vditor.getValue()
       let params = this.$route.query
-      $api
-        .saveArticle(params, { content: content })
-        .then((response) => {
-          this.$message.success('编辑成功')
-        })
-        .catch(() => {})
+      let data = params
+      data.content = content
+      if (params.id) {
+        $api
+          .saveArticle(params, data)
+          .then((response) => {
+            this.$message.success('编辑成功')
+          })
+          .catch(() => {})
+      } else {
+        $api
+          .createArticle(params, data)
+          .then((response) => {
+            this.$message.success('编辑成功')
+          })
+          .catch(() => {})
+      }
     },
     initVditor() {
       const that = this
